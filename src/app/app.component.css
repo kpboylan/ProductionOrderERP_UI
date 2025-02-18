@@ -1,0 +1,20 @@
+/* app.component.css or styles.css */
+html, body {
+    height: 100%;
+    margin: 0;
+  }
+  
+  app-root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;  /* Ensures the app takes at least the full height of the viewport */
+  }
+  
+  router-outlet {
+    flex-grow: 1;  /* Ensures content area grows to take available space */
+  }
+  
+  app-footer {
+    margin-top: auto;  /* Pushes the footer to the bottom */
+  }
+  

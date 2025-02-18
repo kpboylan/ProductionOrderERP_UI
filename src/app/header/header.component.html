@@ -1,0 +1,47 @@
+<div>
+<nav class="navbar navbar-expand-lg navbar-light">
+    <ul class="navbar-nav">
+        <!-- Production Orders -->
+        <li class="dropdown">
+            <a class="dropdown-toggle" href="/productionOrders" data-bs-toggle="dropdown">Production Orders</a>
+            <div class="dropdown-menu">
+                <a href="/addProductionOrder" class="dropdown-item">Add PO</a>
+                <a href="/productionOrders" class="dropdown-item">View PO</a>
+            </div>
+        </li>
+
+        <!-- Products -->
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">Products</a>
+            <div class="dropdown-menu">
+                <a href="/addProduct" class="dropdown-item">Add Product</a>
+                <a href="/products" class="dropdown-item">View Products</a>
+            </div>
+        </li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">Materials</a>
+            <div class="dropdown-menu">
+                <a href="/addMaterial" class="dropdown-item">Add Material</a>
+                <a href="/materials" class="dropdown-item">View Materials</a>
+            </div>
+        </li>
+
+        <!-- Users -->
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">Users</a>
+            <div class="dropdown-menu">
+                <a href="/addUser" class="dropdown-item">Add User</a>
+                <a href="/users" class="dropdown-item">View Users</a>
+            </div>
+        </li>
+
+        <!-- Login/Logout -->
+        <li class="nav-item">
+            <a class="nav-link" href="/login" (click)="toggleLoginLogout()">
+                {{ authService.isLoggedIn() ? 'Logout' : 'Login' }}
+            </a>
+        </li>
+    </ul>
+</nav>
+</div>
+

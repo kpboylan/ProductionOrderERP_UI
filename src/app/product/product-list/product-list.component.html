@@ -1,0 +1,32 @@
+<div class="product-list">
+  <h2>Products</h2>
+  <div class="filter-options">
+    <label>
+      <input type="checkbox" [(ngModel)]="includeInactive"> Include Inactive Products
+    </label>
+    <button (click)="applyChanges()">Apply Changes</button>
+    <a href="/addProduct" class="add-product-link">Add Product</a> <!-- Add Product Link -->   
+  </div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Product ID</th>
+        <th>Product Name</th>
+        <th>Product Code</th>
+        <th>Active</th>
+        <th>Edit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of products" (click)="onRowClick(product.productId)">
+        <td>{{ product.productId }}</td>
+        <td>{{ product.productName }}</td>
+        <td>{{ product.productCode }}</td>
+        <td>{{ product.active }}</td>
+        <td>
+          <a [routerLink]="['/editProduct', product.productId]">Edit</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

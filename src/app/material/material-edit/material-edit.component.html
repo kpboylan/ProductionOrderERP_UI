@@ -1,0 +1,66 @@
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Edit Material</h2>
+    
+    <form [formGroup]="materialEditForm" (ngSubmit)="onSubmit()" class="border p-4 rounded shadow-sm">
+      <div class="mb-3">
+        <label for="materialName" class="form-label">Material Name</label>
+        <input id="materialName" formControlName="materialName" type="text" class="form-control" />
+        <div *ngIf="materialEditForm.get('materialName')?.invalid && materialEditForm.get('productName')?.touched" class="text-danger">
+          Material Name is required.
+        </div>
+      </div>
+      
+      <div class="mb-3">
+        <label for="description" class="form-label">Material Description</label>
+        <input id="description" formControlName="description" type="text" class="form-control" />
+        <div *ngIf="materialEditForm.get('description')?.invalid && materialEditForm.get('description')?.touched" class="text-danger">
+          Material Description is required.
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="currentStock" class="form-label">Current Stock</label>
+        <input id="currentStock" formControlName="currentStock" type="text" class="form-control" />
+        <div *ngIf="materialEditForm.get('currentStock')?.invalid && materialEditForm.get('currentStock')?.touched" class="text-danger">
+          Current stock is required.
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="materialTypeDropdown" class="form-label">Select Material Type:</label>
+        <select class="form-control"
+          id="materialTypeDropdown"
+          formControlName="materialType"
+          (change)="onMaterialTypeChange($event)"
+        >
+          <option value="">-- Select Material Type --</option>
+          <option *ngFor="let materialType of materialTypes" [value]="materialType.materialTypeID">
+            {{ materialType.materialTypeAbbreviation }}
+          </option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="uomDropdown" class="form-label">Select UOM:</label>
+        <select class="form-control"
+          id="uomDropdown"
+          formControlName="uomid"
+          (change)="onUOMChange($event)"
+        >
+          <option value="">-- Select a Unit of Measure --</option>
+          <option *ngFor="let uom of uoms" [value]="uom.uomid">
+            {{ uom.uomCode }}
+          </option>
+        </select>
+      </div>
+      
+      <div class="mb-3 form-check">
+        <input id="active" formControlName="active" type="checkbox" class="form-check-input" />
+        <label for="active" class="form-check-label">Is Active</label>
+      </div>
+      
+      <button type="submit" [disabled]="materialEditForm.invalid" class="btn btn-primary w-100">Submit</button>
+    </form>
+  </div>
+
+

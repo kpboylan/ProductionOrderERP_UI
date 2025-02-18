@@ -1,0 +1,33 @@
+<div class="material-list">
+    <h2>Materials</h2>
+    <div class="filter-options">
+      <label>
+        <input type="checkbox" [(ngModel)]="includeInactive"> Include Inactive Materials
+      </label>
+      <button class="btn" (click)="applyChanges()">Apply Changes</button>
+      <a href="/addMaterial" class="btn btn-success btn-md text-end">Add Material</a>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Material Name</th>
+          <th>Material Type</th>
+          <th>Description</th>
+          <th>Current Stock</th>
+          <th>UOM</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let material of materials" (click)="onRowClick(material.materialID)">
+          <td>{{ material.materialName }}</td>
+          <td>{{ material.materialTypeAbbreviation }}</td>
+          <td>{{ material.description }}</td>
+          <td>{{ material.currentStock }}</td>
+          <td>{{ material.uomCode }}</td>
+          <td>
+            <a [routerLink]="['/editMaterial', material.materialID]" class="btn btn-primary">Edit</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

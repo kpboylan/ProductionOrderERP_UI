@@ -1,0 +1,38 @@
+.user-list {
+    margin: 20px;
+  }
+  
+  .filter-options {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    gap: 10px; /* Controls the space between the checkbox, button, and link */
+  }
+  
+  .filter-options label {
+    margin: 0; /* Remove extra margin from the label */
+  }
+  
+  .filter-options button {
+    padding: 6px 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .filter-options button:hover {
+    background-color: #0056b3;
+  }
+  
+  .add-user-link {
+    font-size: 16px;
+    color: #007bff;
+    text-decoration: none;
+    margin-left: auto; /* Push the link to the far right */
+  }
+  
+  .add-product-link:hover {
+    text-decoration: underline;
+  }
+  
