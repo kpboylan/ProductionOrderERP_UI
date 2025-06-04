@@ -1,19 +1,38 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../login/auth-service/auth.service';
+import { FeatureFlagService } from '../feature-flag/feature-flag.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent {
-  constructor(public authService: AuthService) {}  // Inject AuthService
+export class HeaderComponent implements OnInit {
 
-  // Toggle between Login and Logout
+  showRoomsFeature: boolean = false;
+
+  constructor(private featureFlagService: FeatureFlagService, public authService: AuthService) {}
+
+  ngOnInit(): void {
+    this.featureFlagService.flags$.subscribe(flags => {
+      this.showRoomsFeature = flags['RoomsFeature'] === true;
+    });
+  }
+
+/*   showRoomsSection = false;
+  featureName = 'RoomsFeature';
+
+  constructor(public authService: AuthService, private featureFlagService: FeatureFlagService) {} 
+
+  ngOnInit(): void {
+    this.showRoomsSection = this.featureFlagService.isFeatureEnabled(this.featureName);
+  }*/
+
+
   toggleLoginLogout(): void {
     if (this.authService.isLoggedIn()) {
-      this.authService.logout();  // Log out if logged in
+      this.authService.logout();
     } else {
-      window.location.href = '/login';  // Redirect to the login page if not logged in
+      window.location.href = '/login';
     }
-  }
+  } 
 }

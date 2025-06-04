@@ -1,0 +1,70 @@
+<div class="room-temperature">
+    <h2>Room Humidity Exceptions</h2>
+  
+    <div class="filter-options">
+      <label>
+        <input type="checkbox" [(ngModel)]="showSpikesOnly" (ngModelChange)="applyFilters()"  />
+        Show Spikes Only
+      </label>
+  
+      <label>
+        Batch ID:
+        <input type="text" [(ngModel)]="filterBatchId" class="form-control" />
+      </label>
+  
+      <label>
+        Room ID:
+        <input type="text" [(ngModel)]="filterRoomId" class="form-control" />
+      </label>
+  
+      <button class="btn btn-primary" (click)="applyFilters()">Apply Filters</button>
+    </div>
+  
+    <table class="table table-striped mt-3">
+      <thead>
+        <tr>
+          <th>Timestamp</th>
+          <th>Room</th>
+          <th>Batch</th>
+          <th>Humidity</th>
+          <th>Spike</th>
+          <th>Score</th>
+          <th>p-Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let reading of pagedReadings">
+          <td>{{ reading.timestamp }}</td>
+          <td>{{ reading.roomName }}</td>
+          <td>{{ reading.batchNumber }}</td>
+          <td>{{ reading.humidity }}</td>
+          <td>{{ reading.isSpike ? 'Yes' : 'No' }}</td>
+          <td>{{ reading.score }}</td>
+          <td>{{ reading.pValue }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="pagination-controls mt-3">
+      <button class="btn btn-secondary me-2" [disabled]="currentPage === 1" (click)="goToPreviousPage()">Previous</button>
+      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+      <button class="btn btn-secondary ms-2" [disabled]="currentPage === totalPages" (click)="goToNextPage()">Next</button>
+    </div>
+
+<!--     <ngx-charts-line-chart
+  [view]="[700, 400]"
+  [colorScheme]="colorScheme"
+  [results]="chartSeries"
+  [xAxis]="true"
+  [yAxis]="true"
+  [legend]="true"
+  [showXAxisLabel]="true"
+  [xAxisLabel]="'Timestamp'"
+  [showYAxisLabel]="true"
+  [yAxisLabel]="'Humidity (%)'"
+  [autoScale]="true"
+  [timeline]="true">
+</ngx-charts-line-chart> -->
+  </div>
+  
+  
+

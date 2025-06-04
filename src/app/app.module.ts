@@ -1,7 +1,12 @@
-import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { NgModule, APP_INITIALIZER, isDevMode, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { provideApollo } from 'apollo-angular';
+import { ApolloClientOptions, InMemoryCache, TypePolicies  } from '@apollo/client/core';
+import { APOLLO_OPTIONS } from 'apollo-angular';
+import { HttpLink } from 'apollo-angular/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -12,7 +17,6 @@ import { InventoryComponent } from './inventory/inventory.component';
 import { UserComponent } from './user/user.component';
 import { ProductListComponent } from './product/product-list/product-list.component';
 import { ProductFormComponent } from './product/product-form/product-form.component';
-import { ReactiveFormsModule } from '@angular/forms';
 import { ProductEditComponent } from './product/product-edit/product-edit.component';
 import { UserListComponent } from './user/user-list/user-list.component';
 import { UserEditComponent } from './user/user-edit/user-edit.component';
@@ -26,12 +30,37 @@ import { MaterialFormComponent } from './material/material-form/material-form.co
 import { MaterialListComponent } from './material/material-list/material-list.component';
 import { HeaderNewComponent } from './header-new/header-new.component';
 import { ConfigService } from './config.service';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { RoomTemperatureComponent } from './room/room-temperature/room-temperature.component';
+import { RoomHumidityComponent } from './room/room-humidity/room-humidity.component';
+import { AccessDeniedComponent } from './login/access-denied/access-denied.component';
+import { ProdOrderAddComponent } from './production-order/production-order-form/prod-order-add/prod-order-add.component';
+import { ProdOrderEditComponent } from './production-order/production-order-form/prod-order-edit/prod-order-edit.component';
+import { GraphqlProductsComponent } from './graphql/graphql-products/graphql-products.component';
+import { ProductService } from './graphql/product.service';
 
 export function initializeApp(configService: ConfigService) {
   return () => configService.loadConfig().toPromise().then((config) => {
     configService.setConfig(config); // Save the config data
   });
 }
+
+export function createApollo(): ApolloClientOptions<any> {
+  const httpLink = inject(HttpLink);
+  return {
+    link: httpLink.create({ uri: 'https://localhost:7176/graphql' }),
+    cache: new InMemoryCache(),
+  };
+}
+
+// export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
+//   return {
+//     link: httpLink.create({
+//       uri: 'https://localhost:7176/graphql',
+//     }),
+//     cache: new InMemoryCache(),
+//   };
+// }
 
 @NgModule({
   declarations: [
@@ -54,14 +83,24 @@ export function initializeApp(configService: ConfigService) {
     MaterialEditComponent,
     MaterialFormComponent,
     MaterialListComponent,
-    HeaderNewComponent
+    HeaderNewComponent,
+    RoomTemperatureComponent,
+    RoomHumidityComponent,
+    AccessDeniedComponent,
+    ProdOrderAddComponent,
+    ProdOrderEditComponent,
+    GraphqlProductsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ],
   providers: [
     ConfigService,
@@ -75,7 +114,8 @@ export function initializeApp(configService: ConfigService) {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    }
+    },
+    provideApollo(createApollo)
   ],
   bootstrap: [AppComponent]
 })

@@ -14,17 +14,40 @@ export class UserListComponent implements OnInit {
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
-    this.fetchUsers();
+    this.loadActiveUsers();
   }
 
-  fetchUsers() {
-    this.userService.getUsers(this.includeInactive).subscribe((data: User[]) => {
-      this.users = data;
-    });
+  loadActiveUsers(): void {
+    this.userService.getActiveUsers().subscribe(
+      (data) => {
+        this.users = data;
+      },
+      (error) => {
+        console.error('Error fetching products', error);
+      }
+    );
+  }
+
+  loadAllUsers(): void {
+    this.userService.getAllUsers().subscribe(
+      (data) => {
+        this.users = data;
+      },
+      (error) => {
+        console.error('Error fetching products', error);
+      }
+    );
   }
 
   applyChanges() {
-    this.fetchUsers();
+    if (this.includeInactive)
+      {
+        this.loadAllUsers();
+      }
+      else
+      {
+        this.loadActiveUsers();
+      }
   }
 
   onRowClick(userId: number) {

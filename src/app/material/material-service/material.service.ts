@@ -38,6 +38,17 @@ import { ConfigService } from 'src/app/config.service';
           );
         }
 
+        getActiveMaterials(): Observable<Material[]> {
+          return this.apiUrl$.pipe(
+            switchMap((apiUrl) => {
+              if (!apiUrl) {
+                throw new Error('API URL is not set. Configuration not loaded yet.');
+              }
+              return this.http.get<Material[]>(apiUrl + '/active');
+            })
+          );
+        }
+
         getMaterialById(materialId: number): Observable<Material> {
           return this.apiUrl$.pipe(
             switchMap((apiUrl) => {
@@ -58,12 +69,12 @@ import { ConfigService } from 'src/app/config.service';
               }
         
               if (useMessageQueue) {
-                // Use message queue logic here
+                // Add the material to a queue with RabbitMQ
                 console.log('Using message queue for creating material');
                 return this.http.post(apiUrl + '/rabbitMqCreate', material);
               } 
               else {
-                // Use direct HTTP call logic here
+                // Add the material to the DB with API repository
                 console.log('Using direct HTTP call for creating material');
                 return this.http.post(apiUrl, material);
               }
@@ -93,20 +104,6 @@ import { ConfigService } from 'src/app/config.service';
             })
           );
         }
-      
-        // updateMaterial(materialId: number, material: Material): Observable<any> {
-        //   return this.apiUrl$.pipe(
-        //     switchMap((apiUrl) => {
-        //       if (!apiUrl) {
-        //         throw new Error('API URL is not set. Configuration not loaded yet.');
-        //       }
-        //       const url = `${apiUrl}/${materialId}`;
-        //       console.log('Updating Material data: ', material);
-        //       //return this.http.put<void>(url, material);
-        //       return this.http.put<void>('https://localhost:7283/api/Material/rabbitMqUpdate', material);
-        //     })
-        //   );
-        // }
       
         getMaterialTypes(): Observable<MaterialType[]> {
           return this.apiUrl$.pipe(

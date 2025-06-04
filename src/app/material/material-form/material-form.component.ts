@@ -34,7 +34,7 @@ export class MaterialFormComponent implements OnInit {
         if (apiUrl) {
           this.loadMaterialTypes();
           this.loadUOM();
-        }
+        }286125
       });
     }
 
@@ -51,6 +51,19 @@ export class MaterialFormComponent implements OnInit {
     }
 
     loadUOM(): void {
+      this.materialService.getUOM().subscribe({
+        next: (data) => {
+          this.uoms = data;
+          console.log('UOM data:', data);
+        },
+        error: (error) => {
+          console.error('Error fetching UOM:', error);
+        }
+      });
+    }
+
+
+/*     loadUOM(): void {
       this.materialService.getUOM().subscribe(
         (data) => {
           this.uoms = data;
@@ -60,7 +73,7 @@ export class MaterialFormComponent implements OnInit {
           console.error('Error fetching UOM:', error);
         }
       );
-    }
+    } */
 
     onSubmit(): void {
       if (this.materialForm.valid) {

@@ -13,10 +13,12 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  getUsers(includeInactive: boolean): Observable<User[]> {
-    console.log('Include inactive: ', includeInactive);
-    //return this.http.get<User[]>(this.apiUrl + '/all');
+  getAllUsers(): Observable<User[]> {
     return this.http.get<User[]>(this.apiUrl + '/all');
+  }
+
+  getActiveUsers(): Observable<User[]> {
+    return this.http.get<User[]>(this.apiUrl + '/active');
   }
 
   createUser(user: any): Observable<any> {

@@ -7,23 +7,23 @@
     <h3 class="text-center">Login</h3>
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <div class="mb-3">
-        <label for="Username" class="form-label">Username</label>
+        <label for="loginUsername" class="form-label">Username</label>
         <input
           type="text"
-          id="Username"
+          id="loginUsername"
           class="form-control"
-          formControlName="Username"
+          formControlName="loginUsername"
         />
       </div>
 
       <div class="mb-3">
-        <label for="Password" class="form-label">Password</label>
+        <label for="loginPassword" class="form-label">Password</label>
         <div class="input-group">
           <input
             [type]="showPassword ? 'text' : 'password'"
-            id="Password"
+            id="loginPassword"
             class="form-control"
-            formControlName="Password"
+            formControlName="loginPassword"
           />
           <button type="button" class="btn btn-outline-secondary" (click)="togglePasswordVisibility()">
             <i [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>

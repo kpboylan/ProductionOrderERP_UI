@@ -7,6 +7,7 @@
             <div class="dropdown-menu">
                 <a href="/addProductionOrder" class="dropdown-item">Add PO</a>
                 <a href="/productionOrders" class="dropdown-item">View PO</a>
+                <!-- <a href="/roomExceptions" class="dropdown-item">Room Temperature Anomalies</a> -->
             </div>
         </li>
 
@@ -34,6 +35,22 @@
                 <a href="/users" class="dropdown-item">View Users</a>
             </div>
         </li>
+
+        <!-- Rooms -->
+         <li class="dropdown" *ngIf="showRoomsFeature">
+            <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">Rooms</a>
+            <div class="dropdown-menu">
+                <a href="/roomTemperature" class="dropdown-item">Temperature Exceptions</a>
+                <a href="/roomHumidity" class="dropdown-item">Humidity Exceptions</a>
+            </div>
+        </li>
+        <!-- <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">Rooms</a>
+            <div class="dropdown-menu">
+                <a href="/roomTemperature" class="dropdown-item">Temperature Exceptions</a>
+                <a href="/roomHumidity" class="dropdown-item">Humidity Exceptions</a>
+            </div>
+        </li> -->
 
         <!-- Login/Logout -->
         <li class="nav-item">

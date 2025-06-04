@@ -1,0 +1,27 @@
+<div class="product-filter">
+  <label for="priceFilter">Max Price:</label>
+  <input
+    type="number"
+    id="priceFilter"
+    [(ngModel)]="maxPrice"
+    (ngModelChange)="onFilterChange()"
+    placeholder="Enter max price"
+  />
+</div>
+
+<table class="product-table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Created At</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let product of products">
+      <td>{{ product.name }}</td>
+      <td>{{ product.price | currency }}</td>
+      <td>{{ product.createdAt | date }}</td>
+    </tr>
+  </tbody>
+</table>

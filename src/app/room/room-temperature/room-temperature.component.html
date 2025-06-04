@@ -1,0 +1,58 @@
+<div class="room-temperature">
+    <h2>Room Temperature Exceptions</h2>
+
+
+<form [formGroup]="form" (ngSubmit)="applyFilters()" class="filter-options">
+  <label>
+    <input type="checkbox" formControlName="showAnomaliesOnly" />
+    Show Anomalies Only
+  </label>
+
+  <label>
+    Batch ID:
+    <input type="text" formControlName="batchId" class="form-control" />
+  </label>
+
+  <label>
+    Room ID:
+    <input type="text" formControlName="roomId" class="form-control" />
+  </label>
+
+  <button class="btn btn-primary" type="submit">Apply Filters</button>
+  <div *ngIf="form.get('roomId')?.invalid && form.get('roomId')?.touched" class="text-danger">
+  Room ID is required
+  </div>
+  <div *ngIf="form.get('batchId')?.invalid && form.get('batchId')?.touched" class="text-danger">
+  Batch ID is required
+  </div>
+</form>
+<table class="table table-striped mt-3" *ngIf="pagedReadings.length > 0">
+  <thead>
+    <tr>
+      <th>Timestamp</th>
+      <th>Room</th>
+      <th>Batch</th>
+      <th>Temperature (°C)</th>
+      <th>Anomaly</th>
+      <th>Score</th>
+      <th>p-Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let reading of pagedReadings" [class.table-danger]="reading.isAnomaly">
+      <td>{{ reading.timestamp }}</td>
+      <td>{{ reading.roomName }}</td>
+      <td>{{ reading.batchNumber }}</td>
+      <td>{{ reading.temperature }}</td>
+      <td>{{ reading.isAnomaly ? 'Yes' : 'No' }}</td>
+      <td>{{ reading.score }}</td>
+      <td>{{ reading.pValue }}</td>
+    </tr>
+  </tbody>
+</table>
+<div class="pagination-controls mt-3" *ngIf="pagedReadings.length > 0">
+  <button class="btn btn-secondary me-2" [disabled]="currentPage === 1" (click)="goToPreviousPage()">Previous</button>
+  <span>Page {{ currentPage }} of {{ totalPages }}</span>
+  <button class="btn btn-secondary ms-2" [disabled]="currentPage === totalPages" (click)="goToNextPage()">Next</button>
+</div>
+</div>

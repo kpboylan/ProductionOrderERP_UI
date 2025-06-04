@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';  // Import necessary modules
 import { LoginService } from './login-service/login.service';
 import { Router } from '@angular/router';  // Import Router if you want to navigate after login
+import { jwtDecode } from 'jwt-decode';
+import { FeatureFlagService } from '../feature-flag/feature-flag.service';
 
 @Component({
   selector: 'app-login',
@@ -10,54 +12,68 @@ import { Router } from '@angular/router';  // Import Router if you want to navig
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-  loginForm: FormGroup;  // The form group that will hold our form controls
+  loginForm: FormGroup;  
   showPassword: boolean = false;
   errorMessage: string = '';
 
   constructor(
-    private fb: FormBuilder,  // Inject FormBuilder
+    private fb: FormBuilder,  
     private loginService: LoginService,
-    private router: Router
+    private router: Router,
+    private featureFlagService: FeatureFlagService,
   ) {
     this.loginForm = this.fb.group({
-      username: ['', [Validators.required]],
-      password: ['', [Validators.required]]
+      loginUsername: ['', [Validators.required]],
+      loginPassword: ['', [Validators.required]]
     });
   }
 
   ngOnInit() {
-    // Initialize the login form using FormBuilder
+
     this.loginForm = this.fb.group({
-      Username: ['', [Validators.required]],  // Username field with required validation
-      Password: ['', [Validators.required]],  // Password field with required validation
+      loginUsername: ['', [Validators.required]], 
+      loginPassword: ['', [Validators.required]],
     });
   }
 
-  // Toggle password visibility
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
 
-  // Handle form submission
+
   onSubmit() {
     if (this.loginForm.invalid) {
       console.log('Invalid form: ', this.loginForm.invalid);
-      return;  // If the form is invalid, prevent submission
+      return;  
     }
 
-    // Create the authData object using the form values
     const authData = this.loginForm.value;
-    console.log('AuthData:', authData);  
 
-    // Call the AuthService to perform login
     this.loginService.login(authData).subscribe(
       (response) => {
         console.log('Login successful', response);
-        console.log('Returned token: ', response.token);
-        // Handle response (e.g., store token or redirect)
-        localStorage.setItem('authToken', JSON.stringify(response.token));  // Adjust according to your API response
 
-        this.router.navigate(['/home']);  // Navigate to home or another page after successful login
+        //localStorage.setItem('authToken', response.token.result); 
+        //const token = response.token.result; 
+        localStorage.setItem('authToken', response.token); 
+        const token = response.token; 
+
+        console.log('Auth token:', response.token.result);
+
+        const decodedToken: any = jwtDecode(token);
+        const userRole = decodedToken['role'];
+        const tenantId = decodedToken['tenant_id'];
+        const tenantName = decodedToken['tenant_name'];
+
+        console.log('Decoded user role:', userRole);
+        console.log('Decoded tenant:', tenantId, tenantName);
+
+        localStorage.setItem('userRole', userRole); 
+        
+        this.featureFlagService.clearFlags();
+        this.featureFlagService.getFeatureFlags().subscribe();
+
+        this.router.navigate(['/home']); 
       },
       (error) => {
         console.error('Login failed', error);

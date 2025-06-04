@@ -35,4 +35,56 @@
   .add-material-link:hover {
     text-decoration: underline;
   }
+
+  .search-container {
+    display: flex;
+    align-items: center;
+    margin-left: auto; /* Pushes the search container to the right */
+}
+
+.search-input {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 5px; /* Adds spacing between the input and button */
+}
+
+.search-button {
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.items-per-page {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.items-per-page select {
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.pagination-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pagination-buttons button {
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+.pagination-buttons button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
   

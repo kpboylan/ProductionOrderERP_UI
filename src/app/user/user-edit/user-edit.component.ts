@@ -23,6 +23,7 @@ export class UserEditComponent implements OnInit {
     firstName: '',
     lastName: '',
     email: '',
+    type: '',
     username: '',
     password: '',
     userTypeID: 0,
@@ -54,7 +55,7 @@ export class UserEditComponent implements OnInit {
 
     this.userService.getUserById(this.userId).subscribe({
       next: (user: User) => {
-        console.log('Fetched Product:', user);  // Add a log here to inspect the fetched product
+        console.log('Fetched User:', user);  // Add a log here to inspect the fetched product
         if (user) {
           this.userEditForm.patchValue({
             firstName: user.firstName,

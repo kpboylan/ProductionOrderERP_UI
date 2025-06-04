@@ -1,33 +1,31 @@
-// auth.service.ts
-
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { jwtDecode } from 'jwt-decode';
+import { FeatureFlagService } from 'src/app/feature-flag/feature-flag.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private featureFlagService: FeatureFlagService) {}
 
-  // Get the token from localStorage or sessionStorage
   getToken(): string | null {
     return localStorage.getItem('authToken');
   }
 
-  // Check if the token is expired
   isTokenExpired(): boolean {
     const token = this.getToken();
     if (!token) {
-      return true; // If no token is found, it's considered expired
+      return true; 
     }
 
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
-      const expirationTime = payload.exp * 1000; // Convert to milliseconds
-      return expirationTime < Date.now(); // Token is expired if expiration time is less than current time
+      const expirationTime = payload.exp * 1000; 
+      return expirationTime < Date.now(); 
     } catch (e) {
-      return true; // If there's an error decoding the token, consider it expired
+      return true; 
     }
   }
 
@@ -35,9 +33,22 @@ export class AuthService {
     return !!this.getToken() && !this.isTokenExpired();
   }
 
-  // Logout and redirect to login page
+  getUserRole(): string | null {
+    const token = this.getToken();
+    if (!token) return null;
+
+    try {
+      const decoded: any = jwtDecode(token);
+      return decoded["role"]; // Match the exact claim name you used in your token
+    } catch (e) {
+      return null;
+    }
+  }
+
+
   logout(): void {
     localStorage.removeItem('authToken');
+    this.featureFlagService.clearFlags();
     this.router.navigate(['/login']);
   }
 }

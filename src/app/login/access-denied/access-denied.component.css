@@ -1,0 +1,38 @@
+/* access-denied.component.css */
+.access-denied {
+    text-align: center;
+    padding: 40px;
+    font-family: Roboto, Arial, sans-serif;
+    color: #333;
+  }
+  
+  .access-icon {
+    font-size: 60px;
+    margin-bottom: 20px;
+    display: inline-block;
+  }
+  
+  .access-denied h2 {
+    font-size: 2rem;
+    color: #d32f2f;
+  }
+  
+  .access-denied p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+  }
+  
+  .access-denied a {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #1976d2;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .access-denied a:hover {
+    background-color: #1565c0;
+  }
+  
