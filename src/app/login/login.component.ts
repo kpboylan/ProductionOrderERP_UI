@@ -53,8 +53,6 @@ export class LoginComponent implements OnInit {
       (response) => {
         console.log('Login successful', response);
 
-        //localStorage.setItem('authToken', response.token.result); 
-        //const token = response.token.result; 
         localStorage.setItem('authToken', response.token); 
         const token = response.token; 
 

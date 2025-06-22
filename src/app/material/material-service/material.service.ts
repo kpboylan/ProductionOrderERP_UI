@@ -71,7 +71,8 @@ import { ConfigService } from 'src/app/config.service';
               if (useMessageQueue) {
                 // Add the material to a queue with RabbitMQ
                 console.log('Using message queue for creating material');
-                return this.http.post(apiUrl + '/rabbitMqCreate', material);
+                //return this.http.post(apiUrl + '/rabbitMqCreate', material);
+                return this.http.post('https://kboylan-h8bqg0h3hfc6gsaj.westeurope-01.azurewebsites.net/material', material);
               } 
               else {
                 // Add the material to the DB with API repository

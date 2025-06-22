@@ -19,7 +19,7 @@ export class FeatureFlagGuard implements CanActivate {
       map(flags => {
         const hasAccess = flags['RoomsFeature'] === true;
         if (!hasAccess) {
-          this.router.navigate(['/home']); // or /home or whatever fallback route
+          this.router.navigate(['/home']); 
         }
         return hasAccess;
       })

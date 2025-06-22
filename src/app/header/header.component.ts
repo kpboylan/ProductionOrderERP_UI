@@ -18,16 +18,6 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-/*   showRoomsSection = false;
-  featureName = 'RoomsFeature';
-
-  constructor(public authService: AuthService, private featureFlagService: FeatureFlagService) {} 
-
-  ngOnInit(): void {
-    this.showRoomsSection = this.featureFlagService.isFeatureEnabled(this.featureName);
-  }*/
-
-
   toggleLoginLogout(): void {
     if (this.authService.isLoggedIn()) {
       this.authService.logout();
