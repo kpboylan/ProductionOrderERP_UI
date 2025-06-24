@@ -1,4 +1,4 @@
 {
-    "apiUrl": "https://localhost:7283/api/",
+    "apiUrl": "https://localhost:7034",
     "useMessageQueue": true
 }

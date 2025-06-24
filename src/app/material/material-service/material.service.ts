@@ -18,7 +18,8 @@ import { ConfigService } from 'src/app/config.service';
 
     constructor(private http: HttpClient, private configService: ConfigService) {
       this.configService.loadConfig().subscribe((config) => {
-        const apiUrl = config.apiUrl + 'Material';
+        //const apiUrl = config.apiUrl + 'Material';
+        const apiUrl = config.apiUrl;
         const useMessageQueue = config.useMessageQueue;
         console.log('apiUrl: ', apiUrl);
         console.log('useMessageQueue: ', useMessageQueue);
@@ -44,7 +45,8 @@ import { ConfigService } from 'src/app/config.service';
               if (!apiUrl) {
                 throw new Error('API URL is not set. Configuration not loaded yet.');
               }
-              return this.http.get<Material[]>(apiUrl + '/active');
+              console.log('Here we are: ', apiUrl);
+              return this.http.get<Material[]>(apiUrl + '/api/Material/active');
             })
           );
         }

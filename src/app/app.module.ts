@@ -1,4 +1,19 @@
 import { NgModule, APP_INITIALIZER, isDevMode, inject } from '@angular/core';
+import { LogLevel } from '@azure/msal-browser';
+import { PublicClientApplication, InteractionType } from '@azure/msal-browser';
+import {
+  MsalModule,
+  MsalService,
+  MsalGuard,
+  MsalInterceptor,
+  MsalBroadcastService,
+  MsalRedirectComponent,
+  MsalInterceptorConfiguration,
+  MsalGuardConfiguration,
+  MSAL_INSTANCE,
+  MSAL_GUARD_CONFIG,
+  MSAL_INTERCEPTOR_CONFIG
+} from '@azure/msal-angular';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -53,14 +68,65 @@ export function createApollo(): ApolloClientOptions<any> {
   };
 }
 
-// export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
-//   return {
-//     link: httpLink.create({
-//       uri: 'https://localhost:7176/graphql',
-//     }),
-//     cache: new InMemoryCache(),
-//   };
-// }
+export function MSALInstanceFactory() {
+  return new PublicClientApplication({
+    auth: {
+      clientId: '2740e754-a106-45e1-8d32-d1b01042f761',
+      authority: 'https://login.microsoftonline.com/039488be-782d-40be-9b8d-44a8fa151859',
+      redirectUri: '/'
+    },
+    system: { // <-- Add the system property
+      loggerOptions: {
+        loggerCallback: (level, message, containsPii) => {
+          if (containsPii) {
+            return; // Do not log PII (Personally Identifiable Information) in production
+          }
+          switch (level) {
+            case LogLevel.Error:
+              console.error("[MSAL] E: ", message); // Prefix for easy identification
+              return;
+            case LogLevel.Info:
+              console.info("[MSAL] I: ", message);
+              return;
+            case LogLevel.Verbose:
+              console.debug("[MSAL] V: ", message); // Use console.debug for verbose output
+              return;
+            case LogLevel.Warning:
+              console.warn("[MSAL] W: ", message);
+              return;
+          }
+        },
+        piiLoggingEnabled: false, // Set to true only for very detailed debugging, but be very careful with sensitive info
+        logLevel: LogLevel.Verbose // <-- Set this to Verbose
+      }
+    }
+  });
+}
+
+export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
+  const protectedResourceMap = new Map<string, Array<string>>();
+  protectedResourceMap.set(
+    'https://localhost:7034',
+    //'https://material-api-staging-dpf8a8agbrfzgdce.westeurope-01.azurewebsites.net',
+    ['api://2740e754-a106-45e1-8d32-d1b01042f761/Access_as_User']
+  );
+
+  return {
+    interactionType: InteractionType.Redirect,
+    protectedResourceMap
+  };
+}
+
+  
+
+export function MSALGuardConfigFactory(): MsalGuardConfiguration {
+  return {
+    interactionType: InteractionType.Redirect as InteractionType.Redirect, // Explicitly cast here
+    authRequest: {
+      scopes: ['user.read']  // Or your custom scopes like `api://<client-id>/.default`
+    }
+  };
+}
 
 @NgModule({
   declarations: [
@@ -100,7 +166,12 @@ export function createApollo(): ApolloClientOptions<any> {
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:30000'
-    })
+    }),
+    MsalModule.forRoot(
+  MSALInstanceFactory(),
+  MSALGuardConfigFactory(),
+  MSALInterceptorConfigFactory()
+)
   ],
   providers: [
     ConfigService,
@@ -113,6 +184,11 @@ export function createApollo(): ApolloClientOptions<any> {
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
+      multi: true
+    },
+        {
+      provide: HTTP_INTERCEPTORS,
+      useClass: MsalInterceptor,
       multi: true
     },
     provideApollo(createApollo)

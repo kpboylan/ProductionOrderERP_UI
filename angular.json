@@ -71,10 +71,10 @@
         },
           "configurations": {
             "production": {
-              "browserTarget": "ProductionOrderERP_UI:build:production"
+              "buildTarget": "ProductionOrderERP_UI:build:production"
             },
             "development": {
-              "browserTarget": "ProductionOrderERP_UI:build:development"
+              "buildTarget": "ProductionOrderERP_UI:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -82,7 +82,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ProductionOrderERP_UI:build"
+            "buildTarget": "ProductionOrderERP_UI:build"
           }
         },
         "test": {
